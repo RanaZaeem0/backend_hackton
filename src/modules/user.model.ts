@@ -2,37 +2,54 @@ import mongoose, { Schema, model } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { ApiError } from "../utils/apiError";
+import { string } from "zod";
 
 
-const UserSchema = new Schema(
-  {
-    email: {
-      type: String,
-      unique:true,
-      required: true,
-    },
-    username: {
-      type: String,
-      required: true,
-    },
-    password: {
-      type: String,
-      required: true,
-      select: false,
-    },
-    avatar: {
-      public_id: {
-        type: String,
-      },
-      url: {
-        type: String,
-      },
-    },
+const UserSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
   },
-  {
-    timestamps: true,
+  isAdmin:{
+  type:Boolean,
+  default:false
+  },
+  phoneNumber:{
+    type:String,
+    required:true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+    trim: true
+  },
+  cnic: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  password: {
+    type: String,
+    required: true
+  },
+  isFirstLogin: {
+    type: Boolean,
+    default: true
+  },
+  loanApplications: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'LoanApplication'
+  }],
+  personalInformation: {
+    address: String,
+    phoneNumber: String
   }
-);
+}, { 
+  timestamps: true 
+});
+
 UserSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next()
   this.password = await bcrypt.hash(this.password, 10)

@@ -1,10 +1,11 @@
 import cookieParser from "cookie-parser"
-import express from "express"
+import express, { application } from "express"
 import { userRoute } from "./routes/user.route"
 import cors from "cors"
 import corsOptions  from "./constants/config"
-import { sendEmail } from "./utils/nodeMailer"
 import mongoSanitize from "express-mongo-sanitize"
+import { createApplication } from "./controllers/application.controller"
+import { applicationRoute } from "./routes/appliction.route"
 const app  = express()
 
 
@@ -29,15 +30,12 @@ app.use(cors({
 
 
 app.get('/api/v1/mail',(req,res)=>{
-    sendEmail({
-        email:"zain@gmail.com",
-        message:"122121",
-        subject:"user OTp"
-    })
+
 res.json({
     mea:"pk"
 })
 })
+app.use('/api/v1/application',applicationRoute)
 
 app.use('/api/v1/user',userRoute)
 

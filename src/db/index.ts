@@ -1,31 +1,24 @@
-import mongoose, { MongooseError } from "mongoose"
-import express from "express"
+import mongoose from "mongoose"
 import { ApiError } from "../utils/apiError"
-const app = express()
-
 
 const connectDB = async () => {
     try {
-      const MONGODB_URI = process.env.MONGODB_URI
-      if(!MONGODB_URI){
-      throw new ApiError(404,"cannot get dataBase Url")
-      }
-        const connectInstanse = await mongoose.connect(MONGODB_URI,{
-            dbName:"hackton"
-        })
-        app.on('error',(error)=>{
-            console.log(`erorr  ${error }`);
-        })
-        console.log(`your connect host ${connectInstanse.connection.host}`);
+        const MONGODB_URI = process.env.MONGODB_URI
+        
+        if (!MONGODB_URI) {
+            throw new ApiError(404, "Cannot get database URL")
+        }
+
+        const connectInstance = await mongoose.connect(MONGODB_URI, {
+            dbName: "hackathon"
+        });
+
+        console.log(`MongoDB Connected: ${connectInstance.connection.host}`);
+        return connectInstance;
     } catch (error) {
-        console.log(`Error ${error}`);
-        process.exit(1)
+        console.error(`Database Connection Error: ${error}`);
+        process.exit(1);
     }
 }
 
-
-
-
-
-
-export default connectDB
+export default connectDB;

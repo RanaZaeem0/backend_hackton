@@ -1,6 +1,10 @@
+
 import nodemailer from "nodemailer"
 
-export function sendEmail({ email, subject, message }) {
+export function sendMailPassword({ email, randomPassword }:{
+  email: string,
+  randomPassword: string
+}) {
     return new Promise((resolve, reject) => {
       var transporter = nodemailer.createTransport({
         service: "gmail",
@@ -13,12 +17,13 @@ export function sendEmail({ email, subject, message }) {
       const mail_configs = {
         from: "example@gmail.com",
         to: email,
-        subject: subject,
+        subject: "Your Temporary Password",
         html: `
-        <p>${message}</p>
-        <p>OTP</p>
+        <p>Your temporary password is: <strong>${randomPassword}</strong></p>
+        <p>Please login and change your password immediately.</p>
         `,
       };
+      
       transporter.sendMail(mail_configs, function (error, info) {
         if (error) {
           console.log(error);

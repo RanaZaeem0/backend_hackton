@@ -1,20 +1,24 @@
 import express from "express"
-
 import dotenv from "dotenv"
-import app from "./app.js"
-import connectDB from "./db/index.js"
+import app from "./app"
+import connectDB from "./db"
+
 dotenv.config({
-    path: './env'
+    path: './.env'  // Corrected path
 })
 
-connectDB()
-.then(()=>{
-    app.listen(process.env.PORT || 8000, ()=>{
-        console.log(`Port is riuning on ${process.env.PORT}`);
-    })
-})
-.catch((error)=>{
-    console.log(`error occuse on db cone=nection ${error}`);
-} )
+const startServer = async () => {
+    try {
+        await connectDB();
+        
+        const PORT =   8000;
+        app.listen(PORT, () => {
+            console.log(`Server running on port ${PORT}`);
+        });
+    } catch (error) {
+        console.error(`Server initialization failed: ${error}`);
+        process.exit(1);
+    }
+}
 
-
+startServer();

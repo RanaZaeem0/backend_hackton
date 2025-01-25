@@ -86,7 +86,7 @@ export const ALREADYEXISTS = 409;
 // export const RESET_LINK_SUCCESS = 'Reset Email Send... Please Check your Email';
 // export const MISSING_FIELD_EMAIL = 'Email Field is Required';
 // export const SUCCESS_CATEGORY = 'Category Added Successful';
-// export const INVITATION_UNSUCCESS =
+export const INVALIDATE_DATA =  "Data is not valide"
 //   'Your Invitation Counts has been exceeded, contact your administrator';
 // export const INVITATION_SUCCESS = 'Invitation sent successfully';
 // export const INVITATION_REJECTED = 'Invitation rejected successfully';
