@@ -109,9 +109,11 @@ if (isNaN(initialDepositt)) {
     const randomPassword = generatePassword();
 
     const userExited = await User.findOne({
-        email,
-        cnic
-    });
+        $or: [
+            { email },
+            { cnic }
+        ]
+   });
 
     if (userExited) {
         throw new ApiError(ALREADYEXISTS, "email or CNIC Already Existed");
@@ -129,7 +131,7 @@ if (isNaN(initialDepositt)) {
         throw new ApiError(INTERNALERROR, "Failed to create user");
     }
 
-    const sendEmail = sendMailPassword({ email, randomPassword });
+    const sendEmail = await sendMailPassword({ email, randomPassword });
     if (!sendEmail) {
         throw new ApiError(INTERNALERROR, "Unable to send email");
     }
