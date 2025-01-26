@@ -231,15 +231,15 @@ const getAllApplications = asyncHandler(async (req: Request, res: Response) => {
     const AdminId = req.user?.id; // Assuming the admin's email is passed in the body
   
     
-    if(!AdminId){
-        throw new ApiError(UNAUTHORIZED,"unauthorized not admin")
-    }
-    // Find the admin user based on the email
-    const findAdmin = await User.findOne({ AdminId });
+    // if(!AdminId){
+    //     throw new ApiError(UNAUTHORIZED,"unauthorized not admin")
+    // }
+    // // Find the admin user based on the email
+    // const findAdmin = await User.findOne({ AdminId });
   
-    if (!findAdmin || !findAdmin.isAdmin) {
-      throw new ApiError(BADREQUEST, "You are not authorized to view all applications");
-    }
+    // if (!findAdmin || !findAdmin.isAdmin) {
+    //   throw new ApiError(BADREQUEST, "You are not authorized to view all applications");
+    // }
   
     // Fetch all loan applications
     const applications = await LoanApplication.find();
