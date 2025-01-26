@@ -2,7 +2,7 @@
 import express from "express"
 import { verifyJwt } from "../middleware/auth.middleware"
 import { sendAttachments, upload } from "../middleware/multer.middleware"
-import { createApplication, LoadApprove } from "../controllers/application.controller"
+import { createApplication, getAllApplications, LoadApprove } from "../controllers/application.controller"
 import { uploadFilesToCloudinary, uploadOnCloudinary } from "../utils/cloudinary"
 const applicationRoute  = express.Router()
 
@@ -19,7 +19,7 @@ applicationRoute.post('/createApplication',   (req, res, next) => {
 ,createApplication)
 
 applicationRoute.put("/loanApprove",LoadApprove)
-
+applicationRoute.get('/getAllApplication',getAllApplications)
 
 
 

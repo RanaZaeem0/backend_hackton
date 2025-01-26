@@ -61,183 +61,31 @@ const LoanApplicationSchema = z.object({
 });
 
 
-// const createApplication = asyncHandler(async (req: Request, res: Response) => {
-//     // Convert form data to object
-//     console.log(req.body);
-    
-//     const formData = {
-//         category: req.body.category,
-//         subcategory: req.body.subcategory,
-//         loanAmount: Number(req.body.loanAmount),
-//         loanPeriod: Number(req.body.loanPeroid), // Note the typo
-//         initialDeposit: Number(req.body.initialDeposit),
-//         name: req.body.name,
-//         location: req.body.location,
-//         cnic: req.body.cnic,
-//         email: req.body.email,
-//         witnesses1: {
-//             name: req.body.witness1Name,
-//             cnic: req.body.witness1CNIC,
-//             phoneNumber: req.body.witness1Phone,
-//             email: req.body.witness1Email
-//         },
-//         witnesses2: {
-//             name: req.body.witness2Name,
-//             cnic: req.body.witness2CNIC,
-//             phoneNumber: req.body.witness2Phone,
-//             email: req.body.witness2Email
-//         }
-//     };
-
-//     // Validate form data
-//     const validationResult = LoanApplicationSchema.safeParse(formData);
-
-//     if (!validationResult.success) {
-//         console.error(validationResult.error.errors);
-//         throw new ApiError(NOTALLOWED, validationResult.error.errors[0].message)
-//     }
-//     const  {email,name,cnic,location,initialDeposit,loanPeriod,loanAmount,witnesses1,witnesses2} = validationResult.data
-//     const files: any = req.files
-//     // Generate unique token
-
-//     function generateUniqueToken(): string {
-//         return `LN-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
-//     }
-//     if (witnesses1.cnic === witnesses2.cnic) {
-//         throw new ApiError(208,"Witness CNICs must be different");
-//     }
-
-//     // Check email uniqueness
-//     if (witnesses1.email === witnesses2.email) {
-//         throw new ApiError(208,"Witness emails must be different");
-//     }
-
-//     // Check phone number uniqueness
-//     if (witnesses1.phoneNumber === witnesses2.phoneNumber) {
-//         throw new ApiError(208,"Witness phone numbers must be different");
-//     }
-
-//     // if (!files || (Array.isArray(files) && files.length === 0)) {
-//     //     unLinkFileOnError(files)
-//     //     throw new ApiError(400, "No files provided");
-
-//     // }
-
-//     // if (Array.isArray(files) && files.length > 5) {
-//     //     unLinkFileOnError(files)
-//     //     throw new ApiError(400, "Cannot send more than 5 files");
-
-//     // }
-
-//     // const attachments = await uploadFilesToCloudinary(files);
-
-//     // if (!attachments) {
-//     //     throw new ApiError(404, "Plz reSend")
-//     // }
-
-//     // Create loan application
-
-
-//     console.log(req.body,"bodydata");
-//     function generatePassword(): string {
-//         const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
-//         let password = '';
-//         const length = 7
-//         for (let i = 0; i < length; i++) {
-//             password += chars[Math.floor(Math.random() * chars.length)];
-//         }
-        
-//         return password;
-//      }
-    
-//     const randomPassword = generatePassword()
-
-
-//     const userExited = await User.findOne({
-//         email,
-//         cnic
-//     })
-//   if(userExited){
-//     throw new ApiError(ALREADYEXISTS,"email or CNIC Already Exited")
-//   }
-
-  
-//   const createUser  = await User.create({
-//       email,
-//       cnic,
-//       name,
-//       password:randomPassword
-//     })
-    
-//     if(!createUser){
-//         throw new ApiError(INTERNALERROR,"email or CNIC Already Exited")
-//       }
-//    const sendEmail =  sendMailPassword({email,randomPassword})
-//   if(!sendEmail){
-//   throw new ApiError(INTERNALERROR,"Unable to send email")
-//   }
-
-// const initialDepositNum :number = Number(initialDeposit)
-//   const createApplication = await LoanApplication.create(
-//     email,
-//     name,
-//     cnic,
-//     user: createUser._id, 
-//     location,
-//     tokenNumber: 1,
-//     initialDeposit: initialDepositNum,
-//     loanPeriod,
-//     loanAmount,
-//     witnesses1,
-//     witnesses2,
-//     status: 'PENDING', 
-//   )
-
-//   res.json(
-//     new ApiResponse(201,createApplication)
-//   )
-// });
 
 const createApplication = asyncHandler(async (req: Request, res: Response) => {
     // Convert form data to object
     console.log(req.body);
-    
-    const formData = {
-        category: req.body.category,
-        subcategory: req.body.subcategory,
-        loanAmount: Number(req.body.loanAmount),
-        loanPeriod: Number(req.body.loanPeroid), // Note the typo
-        initialDeposit: Number(req.body.initialDeposit),
-        name: req.body.name,
-        location: req.body.location,
-        cnic: req.body.cnic,
-        email: req.body.email,
-        phoneNumber:req.body.phoneNumber,
-        witnesses1: {
-            name: req.body.witness1Name,
-            cnic: req.body.witness1CNIC,
-            phoneNumber: req.body.witness1Phone,
-            email: req.body.witness1Email
-        },
-        witnesses2: {
-            name: req.body.witness2Name,
-            cnic: req.body.witness2CNIC,
-            phoneNumber: req.body.witness2Phone,
-            email: req.body.witness2Email
-        }
-    };
+    const loanAmountt = Number(req.body.loanAmount);
+const loanPeriodt = Number(req.body.loanPeriod);
+const initialDepositt = Number(req.body.initialDeposit);
 
-    // Validate form data
-    const validationResult = LoanApplicationSchema.safeParse(formData);
+if (isNaN(loanAmountt)) {
+    throw new ApiError(400, "loanAmount must be a valid number");
+}
+if (isNaN(loanPeriodt)) {
+    throw new ApiError(400, "loanPeriod must be a valid number");
+}
+if (isNaN(initialDepositt)) {
+    throw new ApiError(400, "initialDeposit must be a valid number");
+}
 
-    if (!validationResult.success) {
-        console.error(validationResult.error.errors);
-        throw new ApiError(NOTALLOWED, validationResult.error.errors[0].message)
-    }
+  
 
-    const { email, name, cnic,phoneNumber, location, initialDeposit, loanPeriod, loanAmount, witnesses1, witnesses2 } = validationResult.data;
+
+    const { email, name, cnic,phoneNumber,category,subcategory, location, initialDeposit, loanPeriod, loanAmount, witnesses1, witnesses2 } = req.body;
     const files: any = req.files;
-
+  console.log("valide");
+  
     // Generate unique token
     function generateUniqueToken(): string {
         return `LN-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
@@ -256,6 +104,7 @@ const createApplication = asyncHandler(async (req: Request, res: Response) => {
     if (witnesses1.phoneNumber === witnesses2.phoneNumber) {
         throw new ApiError(208, "Witness phone numbers must be different");
     }
+
 
     const randomPassword = generatePassword();
 
@@ -286,19 +135,22 @@ const createApplication = asyncHandler(async (req: Request, res: Response) => {
     }
 
     const initialDepositNum: number = Number(initialDeposit);
+    const loanPeriodnum = Number(loanPeriod)
+    const loanAmountNUm  =Number(loanAmount)
 
+    const  witnesses1data = {email:witnesses1.email,phoneNumber:witnesses1.phoneNumber,cnic:witnesses1.cnic,name:witnesses1.name}
     // Fix the Loan Application creation and add correct properties
     const newLoanApplication = await LoanApplication.create({
-        category: formData.category,
-        subcategory: formData.subcategory,
-        loanAmount,
-        loanPeriod,
-        initialDeposit: initialDepositNum,
+        category: category,
+        subcategory: subcategory,
+        loanAmount:loanAmountt,
+        loanPeriod:loanPeriodt,
+        initialDeposit:initialDepositt,
         name,
         email,
         location,
         cnic,
-        witnesses1,
+        witnesses1data,
         witnesses2,
         user: createUser._id, // Corrected this line
         status: 'PENDING', // Corrected this line

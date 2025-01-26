@@ -6,6 +6,8 @@ import corsOptions  from "./constants/config"
 import mongoSanitize from "express-mongo-sanitize"
 import { createApplication } from "./controllers/application.controller"
 import { applicationRoute } from "./routes/appliction.route"
+import { adminLogin } from "./controllers/admin.controller"
+import { adminRoute } from "./routes/admin.route"
 const app  = express()
 
 
@@ -38,6 +40,8 @@ res.json({
 app.use('/api/v1/application',applicationRoute)
 
 app.use('/api/v1/user',userRoute)
+app.use('/api/v1/admin',adminRoute)
+
 
 
 export default app
